@@ -2,10 +2,15 @@
 
 Fractional is a library for parsing fractions.
 
-Here's how you use it:
+Convert fractional string to float:
  Fractional.to_f("1100 7/8") #=> 1100.875
- Fractional.to_s(1100.875) #=> "1100 7/8"
 
+Convert float to fractional string:
+ Fractional.to_s(1100.875)   #=> "1100 7/8"
+
+Round a value to the nearest fraction:
+ Fractional.round_to_nearest_fraction("1100 1/7", "1/64")           #=> "1100 9/64"
+ Fractional.round_to_nearest_fraction(1100.142857142857143, "1/64") #=> 1100.140625
 
 == Note on Patches/Pull Requests
  

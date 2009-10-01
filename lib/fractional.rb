@@ -24,6 +24,19 @@ module Fractional
       whole_number.to_s + " " + float_to_rational(decimal_point_value).to_s
     end 
   end
+  
+  def self.round_to_nearest_fraction(value, to_nearest_fraction)
+    if value.is_a? String
+      to_nearest_float = to_f(to_nearest_fraction)
+
+      to_s((self.to_f(value) / to_nearest_float).round * to_nearest_float)
+    else
+      to_nearest_float = to_f(to_nearest_fraction)
+
+      (value / to_nearest_float).round * to_nearest_float      
+    end
+    
+  end
 
   private
     
