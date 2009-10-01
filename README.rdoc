@@ -1,6 +1,12 @@
 = fractional
 
-Description goes here.
+Fractional is a library for parsing fractions.
+
+Here's how you use it:
+
+Fractional.to_f("1100 7/8") #=> 1100.875
+Fractional.to_s(1100.875) #=> "1100 7/8"
+
 
 == Note on Patches/Pull Requests
  
