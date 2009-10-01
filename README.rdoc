@@ -22,8 +22,8 @@ Round a value to the nearest fraction:
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-== Thanks
-Thanks to Jannis Harder for his hardcore float to rational method I nicked from at http://markmail.org/message/nqgrsmaixwbrvsno 
+== Special thanks
+Thanks to Jannis Harder for his hardcore float to rational method I nicked from http://markmail.org/message/nqgrsmaixwbrvsno 
 
 == Copyright
 
