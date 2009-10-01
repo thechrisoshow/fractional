@@ -43,6 +43,8 @@ module Fractional
     value - value.truncate
   end
 
+  # Whoa this method is crazy
+  # I nicked it from Jannis Harder at http://markmail.org/message/nqgrsmaixwbrvsno
   def self.float_to_rational(value)
     if value.nan? 
       return Rational(0,0) # Div by zero error 
