@@ -1,3 +1,5 @@
+require 'rational'
+
 module Fractional
 
   def self.to_f(value)
