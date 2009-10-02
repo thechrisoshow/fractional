@@ -20,8 +20,13 @@ module Fractional
     if whole_number == 0
       float_to_rational(value.to_f).to_s  
     else
-      decimal_point_value = get_decimal_point_value(value.to_f)      
-      whole_number.to_s + " " + float_to_rational(decimal_point_value).to_s
+      decimal_point_value = get_decimal_point_value(value.to_f)
+      if decimal_point_value > 0
+        whole_number.to_s + " " + float_to_rational(decimal_point_value).to_s
+      else
+        whole_number.to_s
+      end
+
     end 
   end
   

@@ -36,7 +36,11 @@ describe "Fractional", "to_s" do
     
   it "should parse 1100.875 to '1100 7/8'" do
     Fractional.to_s(1100.875).should == "1100 7/8"
-  end  
+  end
+
+  it "should not have a fraction if it's just a whole number" do
+    Fractional.to_s(1100).should == "1100"    
+  end
   
 end
 
