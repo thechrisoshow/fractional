@@ -42,6 +42,14 @@ describe "Fractional", "to_s" do
     Fractional.to_s(1100).should == "1100"    
   end
   
+  it "should round if passed 'to nearest'" do
+    Fractional.to_s(1100.14285714286, :to_nearest => "1/64").should == "1100 9/64"
+  end
+  
+  it "should round if passed 'to_nearest' and is a simple fraction" do
+    Fractional.to_s(0.14285714286, :to_nearest => "1/64").should == "9/64"
+  end
+  
 end
 
 describe "Fractional", "round" do

@@ -14,19 +14,16 @@ module Fractional
     end
   end
 
-  def self.to_s(value)
+  def self.to_s(value, args={})
     whole_number = value.to_f.truncate.to_i
     
     if whole_number == 0
-      float_to_rational(value.to_f).to_s  
+      fractional_part_to_string(value, args[:to_nearest])
     else
       decimal_point_value = get_decimal_point_value(value.to_f)
-      if decimal_point_value > 0
-        whole_number.to_s + " " + float_to_rational(decimal_point_value).to_s
-      else
-        whole_number.to_s
-      end
-
+      return whole_number.to_s if decimal_point_value == 0        
+            
+      whole_number.to_s + " " + fractional_part_to_string(decimal_point_value, args[:to_nearest])
     end 
   end
   
@@ -59,6 +56,14 @@ module Fractional
   
   def self.get_decimal_point_value(value)
     value - value.truncate
+  end
+  
+  def self.fractional_part_to_string(value, round)
+    if round
+      round_to_nearest_fraction(float_to_rational(value.to_f).to_s, round)
+    else
+      float_to_rational(value.to_f).to_s  
+    end
   end
 
   # Whoa this method is crazy
