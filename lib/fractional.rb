@@ -29,8 +29,8 @@ module Fractional
       
       fractional_part = fractional_part_to_string(decimal_point_value.abs, args[:to_nearest])
       
-      if fractional_part == "1"
-        (whole_number + 1).to_s
+      if (fractional_part == "1") || (fractional_part == "0")
+        (whole_number + fractional_part.to_i).to_s
       else
         whole_number.to_s + " " + fractional_part
       end
