@@ -70,7 +70,8 @@ module Fractional
   
   def self.fractional_part_to_string(value, round)
     if round
-      round_to_nearest_fraction(float_to_rational(value.to_f).to_s, round)
+      rounded_value = round_to_nearest_fraction(float_to_rational(value.to_f).to_s, round)
+      value < 0 ? "-" + rounded_value : rounded_value
     else
       float_to_rational(value.to_f).to_s  
     end

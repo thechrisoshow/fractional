@@ -54,8 +54,9 @@ describe "Fractional", "to_s" do
     Fractional.to_s(0.14285714286, :to_nearest => "1/64").should == "9/64"
   end
   
-  it "should round if passed 'to_nearest' that rounds to nearest whole numbe" do
+  it "should round if passed 'to_nearest' that rounds to nearest whole number" do
     Fractional.to_s(1100.875, :to_nearest => "1/2").should == "1101"
+    Fractional.to_s(1100.2, :to_nearest => "1/2").should == "1100"
   end
   
   it "should allow for negative values for mixed fractions" do
@@ -65,6 +66,16 @@ describe "Fractional", "to_s" do
   it "should allow for negative values for single fractions" do
     Fractional.to_s(-0.875).should == "-7/8"
   end
+  
+  it "should allow for negative mixed fractions that that are rounded" do
+    Fractional.to_s(-101.140625, :to_nearest => "1/64").should == "-101 9/64"
+  end
+  
+  it "should allow for negative single fractions that that are rounded" do
+    Fractional.to_s(-0.140625, :to_nearest => "1/64").should == "-9/64"
+  end
+  
+  
 end
 
 describe "Fractional", "round" do
@@ -89,7 +100,8 @@ describe "Fractional", "round" do
     Fractional.round_to_nearest_fraction(1100.142857142857143, "1/64").should == 1100.140625
   end
   
-  it "should round if passed 'to_nearest' that rounds to nearest whole numbe" do
+  it "should round if passed 'to_nearest' that rounds to nearest whole number" do
     Fractional.round_to_nearest_fraction(1100.875, "1/2").should == 1101
+    Fractional.round_to_nearest_fraction(1100.1, "1/2").should == 1100    
   end
 end
