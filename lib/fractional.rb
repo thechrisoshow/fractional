@@ -6,16 +6,19 @@ module Fractional
     result = 0
     
     if mixed_fraction?(value)
-      whole, numerator, denominator = value.scan(/(\d*)\s(\d+)\/(\d+)/).flatten
-      result = (numerator.to_f / denominator.to_f) + whole.to_f
+      whole, numerator, denominator = value.scan(/(\-?\d*)\s(\d+)\/(\d+)/).flatten
+      
+      result = (numerator.to_f / denominator.to_f) + whole.to_f.abs
+      
+      result = whole.to_f > 0 ? result : -result
     elsif single_fraction?(value)
       numerator, denominator = value.split("/")
-      result = numerator.to_f / denominator.to_f
+      result =  numerator.to_f / denominator.to_f
     else
       result = value.to_f
     end
     
-    value =~ /-/ ? -result : result
+    result
   end
 
   def self.to_s(value, args={})
@@ -61,7 +64,7 @@ module Fractional
   end
 
   def self.mixed_fraction?(value)
-    fraction?(value) and value.match(/\d*\s+\d+\/\d+/)
+    fraction?(value) and value.match(/\-?\d*\s+\d+\/\d+/)
   end
   
   def self.get_decimal_point_value(value)
@@ -70,8 +73,7 @@ module Fractional
   
   def self.fractional_part_to_string(value, round)
     if round
-      rounded_value = round_to_nearest_fraction(float_to_rational(value.to_f).to_s, round)
-      value < 0 ? "-" + rounded_value : rounded_value
+      round_to_nearest_fraction(float_to_rational(value.to_f).to_s, round)
     else
       float_to_rational(value.to_f).to_s  
     end

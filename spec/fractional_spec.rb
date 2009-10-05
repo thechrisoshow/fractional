@@ -22,8 +22,12 @@ describe "Fractional", "to_f" do
     Fractional.to_f("1100 7/8").should == 1100.875
   end
   
-  it "should allow for negative values" do
+  it "should allow for negative mixed fractions" do
     Fractional.to_f('-10 1/2').should == -10.5    
+  end
+  
+  it "should allow for negative single fractions" do
+    Fractional.to_f("-1/64").should == -0.015625
   end
   
 end
