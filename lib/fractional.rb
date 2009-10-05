@@ -3,27 +3,37 @@ require 'rational'
 module Fractional
 
   def self.to_f(value)
+    result = 0
+    
     if mixed_fraction?(value)
       whole, numerator, denominator = value.scan(/(\d*)\s(\d+)\/(\d+)/).flatten
-      (numerator.to_f / denominator.to_f) + whole.to_f
+      result = (numerator.to_f / denominator.to_f) + whole.to_f
     elsif single_fraction?(value)
       numerator, denominator = value.split("/")
-      numerator.to_f / denominator.to_f
+      result = numerator.to_f / denominator.to_f
     else
-      value.to_f
+      result = value.to_f
     end
+    
+    value =~ /-/ ? -result : result
   end
 
   def self.to_s(value, args={})
     whole_number = value.to_f.truncate.to_i
     
-    if whole_number == 0
+    if whole_number == 0 # Single fraction
       fractional_part_to_string(value, args[:to_nearest])
-    else
+    else # Mixed fraction
       decimal_point_value = get_decimal_point_value(value.to_f)
-      return whole_number.to_s if decimal_point_value == 0        
-            
-      whole_number.to_s + " " + fractional_part_to_string(decimal_point_value, args[:to_nearest])
+      return whole_number.to_s if decimal_point_value == 0
+      
+      fractional_part = fractional_part_to_string(decimal_point_value.abs, args[:to_nearest])
+      
+      if fractional_part == "1"
+        (whole_number + 1).to_s
+      else
+        whole_number.to_s + " " + fractional_part
+      end
     end 
   end
   
