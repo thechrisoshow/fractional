@@ -54,6 +54,10 @@ describe "Fractional", "to_s" do
     Fractional.to_s(1100.14285714286, :to_nearest => "1/64").should == "1100 9/64"
   end
   
+  it "should round if passed 'to_nearest' that is a float" do
+    Fractional.to_s(1100.14285714286, :to_nearest => 0.015625).should == "1100 9/64"    
+  end
+  
   it "should round if passed 'to_nearest' and is a simple fraction" do
     Fractional.to_s(0.14285714286, :to_nearest => "1/64").should == "9/64"
   end
@@ -107,5 +111,9 @@ describe "Fractional", "round" do
   it "should round if passed 'to_nearest' that rounds to nearest whole number" do
     Fractional.round_to_nearest_fraction(1100.875, "1/2").should == 1101
     Fractional.round_to_nearest_fraction(1100.1, "1/2").should == 1100    
+  end
+  
+  it "should round if passed a float" do
+    Fractional.round_to_nearest_fraction(1100.875, 0.5).should == 1101
   end
 end
