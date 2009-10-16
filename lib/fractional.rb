@@ -1,7 +1,25 @@
 require 'rational'
 
-module Fractional
-
+class Fractional
+  
+  def initialize(value)
+    @value = value
+  end
+  
+  def to_s
+    @value
+  end
+  
+  def to_f
+    Fractional.to_f(@value)
+  end
+  
+  [:+, :-, :*, :/].each do |math_operator|
+    define_method(math_operator) do |another_fractional|
+      Fractional.new(Fractional.to_s(self.to_f.send(math_operator, another_fractional.to_f)))      
+    end
+  end
+  
   def self.to_f(value)
     result = 0
     

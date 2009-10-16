@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chris O'Sullivan"]
-  s.date = %q{2009-10-05}
+  s.date = %q{2009-10-14}
   s.description = %q{Fractional is a Ruby library for parsing fractions.}
   s.email = %q{thechrisoshow@gmail.com}
   s.extra_rdoc_files = [
