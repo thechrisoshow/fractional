@@ -24,7 +24,7 @@ class Fractional
     result = 0
     
     if mixed_fraction?(value)
-      whole, numerator, denominator = value.scan(/(\-?\d*)\s(\d+)\/(\d+)/).flatten
+      whole, numerator, denominator = value.scan(/(\-?\d*)\s+(\d+)\/(\d+)/).flatten
       
       result = (numerator.to_f / denominator.to_f) + whole.to_f.abs
       
