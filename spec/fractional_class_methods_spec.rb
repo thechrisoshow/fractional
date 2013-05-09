@@ -30,6 +30,9 @@ describe "Fractional", "to_f" do
     Fractional.to_f("-1/64").should == -0.015625
   end
   
+  it "should ignore repeated whitespace" do
+    Fractional.to_f("6 5/8").should == Fractional.to_f("6  5/8")
+  end
 end
 
 describe "Fractional", "to_s" do
