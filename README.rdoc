@@ -28,6 +28,7 @@ Thanks to Jannis Harder for his hardcore float to rational method I nicked from 
 
 = Contributors
 Joey Aghion https://github.com/joeyAghion
+
 muff1nman https://github.com/muff1nman
 
 
