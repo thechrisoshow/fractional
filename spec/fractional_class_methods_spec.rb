@@ -126,7 +126,7 @@ describe "Fractional", "fraction?" do
     Fractional.fraction?("3/4").should be true
   end
 
-  it "should recongize a simple mixed fraction" do
+  it "should recongize a mixed fraction" do
     Fractional.fraction?("1 11/12").should be true
   end
 
@@ -168,4 +168,33 @@ describe "Fractional", "fraction?" do
     Fractional.fraction?("1 2    /3").should be false
   end
 
+end
+
+describe "Fractional", "single_fraction?" do
+  it "should recognize a single fraction" do
+    Fractional.single_fraction?("3/4").should be true
+  end
+
+  it "should recongize a negative single fraction" do
+    Fractional.single_fraction?("-3/4").should be true
+  end
+
+  it "should not recongize a mixed fraction" do
+    Fractional.single_fraction?("1 11/12").should be true
+  end
+
+end
+
+describe "Fractional", "mixed_fraction?" do
+  it "should recongize a mixed fraction" do
+    Fractional.mixed_fraction?("1 11/12").should be true
+  end
+
+  it "should recognize a negative mixed fraciton" do
+    Fractional.mixed_fraction?("-1 11/12").should be true
+  end
+
+  it "should not recognize a single fraction" do
+    Fractional.mixed_fraction?("3/4").should be false
+  end
 end
