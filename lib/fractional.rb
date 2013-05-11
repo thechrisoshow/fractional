@@ -1,8 +1,7 @@
 require 'rational'
 
 class Fractional
-  @@fractions = /^\s*\-?(?:(\d*)\s+)?(\d+)\/(\d+)\s*$/
-  @@single_fraction = /^\s*(\-?\d+)\/(\d+)\s*$/
+  @@single_fraction = /^\s*(\-?\d+)\/(\-?\d+)\s*$/
   @@mixed_fraction = /^\s*(\-?\d*)\s+(\d+)\/(\d+)\s*$/
   
   def initialize(value)
@@ -77,7 +76,7 @@ class Fractional
   private
     
   def self.fraction?(value)
-    value.is_a? String and value.match(@@fractions)
+    value.is_a? String and (value.match(@@single_fraction) or value.match(@@mixed_fraction))
   end
 
   def self.single_fraction?(value)
