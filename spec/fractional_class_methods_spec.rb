@@ -29,6 +29,11 @@ describe "Fractional", "to_f" do
   it "should allow for negative single fractions" do
     Fractional.to_f("-1/64").should == -0.015625
   end
+
+  it "should allow for negative denominators in single fractions" do
+    Fractional.to_f("1/-64").should == -0.015625
+    Fractional.to_f("-1/-64").should == 0.015625
+  end
   
   it "should ignore repeated whitespace" do
     Fractional.to_f("6 5/8").should == Fractional.to_f("6  5/8")
@@ -190,6 +195,11 @@ describe "Fractional", "single_fraction?" do
 
   it "should not recongize a mixed fraction" do
     Fractional.single_fraction?("1 11/12").should be_false
+  end
+
+  it "should allow for negative denominators in single fractions" do
+    Fractional.single_fraction?("1/-64").should be_true
+    Fractional.single_fraction?("-1/-64").should be_true
   end
 
 end
