@@ -120,3 +120,52 @@ describe "Fractional", "round" do
     Fractional.round_to_nearest_fraction(1100.875, 0.5).should == 1101
   end
 end
+
+describe "Fractional", "fraction?" do
+  it "should recognize a simple fraction" do
+    Fractional.fraction?("3/4").should be true
+  end
+
+  it "should recongize a simple mixed fraction" do
+    Fractional.fraction?("1 11/12").should be true
+  end
+
+  it "should recongize a negative fraction" do
+    Fractional.fraction?("-3/4").should be true
+  end
+
+  it "should recongize a negative mixed fraction" do
+    Fractional.fraction?("-6 2/9").should be true
+  end
+
+  it "should accept more than one space between the whole number and fractional part" do
+    Fractional.fraction?("1  2/3").should be true
+    Fractional.fraction?("3               1/2").should be true
+  end
+
+  it "should not recognize decimals" do
+    Fractional.fraction?("2.3").should be false
+  end
+
+  it "should not recognize two consecutive fractions" do
+    Fractional.fraction?("2/3 9/5").should be false
+  end
+
+  it "should not recognize a string with a slash" do
+    Fractional.fraction?("n/a").should be false
+  end
+
+  it "should not recognize a fraction mixed with non-decimals" do
+    Fractional.fraction?("3a/4").should be false
+    Fractional.fraction?("a2/3").should be false
+    Fractional.fraction?("1 2/3a").should be false
+  end
+
+  it "should not recognize fractions with improper spacing" do
+    Fractional.fraction?("2 /2").should be false
+    Fractional.fraction?("1/ 3").should be false
+    Fractional.fraction?("1  2/  3").should be false
+    Fractional.fraction?("1 2    /3").should be false
+  end
+
+end
