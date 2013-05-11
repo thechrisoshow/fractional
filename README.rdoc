@@ -14,7 +14,7 @@ Round a value to the nearest fraction:
  Fractional.round_to_nearest_fraction(1100.142857142857143, "1/64") #=> 1100.140625
 
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
@@ -24,8 +24,13 @@ Round a value to the nearest fraction:
 * Send me a pull request. Bonus points for topic branches.
 
 == Special thanks
-Thanks to Jannis Harder for his hardcore float to rational method I nicked from http://markmail.org/message/nqgrsmaixwbrvsno 
+Thanks to Jannis Harder for his hardcore float to rational method I nicked from http://markmail.org/message/nqgrsmaixwbrvsno
+
+= Contributors
+Joey Aghion https://github.com/joeyAghion
+muff1nman https://github.com/muff1nman
+
 
 == Copyright
 
-Copyright (c) 2009 Chris O'Sullivan. See LICENSE for details.
+Copyright (c) 2009-2013 Chris O'Sullivan. See LICENSE for details.
