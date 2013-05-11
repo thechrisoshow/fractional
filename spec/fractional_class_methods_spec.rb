@@ -123,78 +123,87 @@ end
 
 describe "Fractional", "fraction?" do
   it "should recognize a simple fraction" do
-    Fractional.fraction?("3/4").should be true
+    Fractional.fraction?("3/4").should be_true
   end
 
   it "should recongize a mixed fraction" do
-    Fractional.fraction?("1 11/12").should be true
+    Fractional.fraction?("1 11/12").should be_true
   end
 
   it "should recongize a negative fraction" do
-    Fractional.fraction?("-3/4").should be true
+    Fractional.fraction?("-3/4").should be_true
   end
 
   it "should recongize a negative mixed fraction" do
-    Fractional.fraction?("-6 2/9").should be true
+    Fractional.fraction?("-6 2/9").should be_true
   end
 
   it "should accept more than one space between the whole number and fractional part" do
-    Fractional.fraction?("1  2/3").should be true
-    Fractional.fraction?("3               1/2").should be true
+    Fractional.fraction?("1  2/3").should be_true
+    Fractional.fraction?("3               1/2").should be_true
+  end
+
+  it "should accept fractions with front and rear padding" do
+    Fractional.fraction?("     2/3").should be_true
+    Fractional.fraction?("2/3      ").should be_true
+    Fractional.fraction?("      2/3     ").should be_true
+    Fractional.fraction?("   1 2/3").should be_true
+    Fractional.fraction?("1 2/3      ").should be_true
+    Fractional.fraction?("    1 2/3   ").should be_true
   end
 
   it "should not recognize decimals" do
-    Fractional.fraction?("2.3").should be false
+    Fractional.fraction?("2.3").should be_false
   end
 
   it "should not recognize two consecutive fractions" do
-    Fractional.fraction?("2/3 9/5").should be false
+    Fractional.fraction?("2/3 9/5").should be_false
   end
 
   it "should not recognize a string with a slash" do
-    Fractional.fraction?("n/a").should be false
+    Fractional.fraction?("n/a").should be_false
   end
 
   it "should not recognize a fraction mixed with non-decimals" do
-    Fractional.fraction?("3a/4").should be false
-    Fractional.fraction?("a2/3").should be false
-    Fractional.fraction?("1 2/3a").should be false
+    Fractional.fraction?("3a/4").should be_false
+    Fractional.fraction?("a2/3").should be_false
+    Fractional.fraction?("1 2/3a").should be_false
   end
 
   it "should not recognize fractions with improper spacing" do
-    Fractional.fraction?("2 /2").should be false
-    Fractional.fraction?("1/ 3").should be false
-    Fractional.fraction?("1  2/  3").should be false
-    Fractional.fraction?("1 2    /3").should be false
+    Fractional.fraction?("2 /2").should be_false
+    Fractional.fraction?("1/ 3").should be_false
+    Fractional.fraction?("1  2/  3").should be_false
+    Fractional.fraction?("1 2    /3").should be_false
   end
 
 end
 
 describe "Fractional", "single_fraction?" do
   it "should recognize a single fraction" do
-    Fractional.single_fraction?("3/4").should be true
+    Fractional.single_fraction?("3/4").should be_true
   end
 
-  it "should recongize a negative single fraction" do
-    Fractional.single_fraction?("-3/4").should be true
+  it "should recognize a negative numerator with a single fraction" do
+    Fractional.single_fraction?("-3/4").should be_true
   end
 
   it "should not recongize a mixed fraction" do
-    Fractional.single_fraction?("1 11/12").should be true
+    Fractional.single_fraction?("1 11/12").should be_false
   end
 
 end
 
 describe "Fractional", "mixed_fraction?" do
   it "should recongize a mixed fraction" do
-    Fractional.mixed_fraction?("1 11/12").should be true
+    Fractional.mixed_fraction?("1 11/12").should be_true
   end
 
   it "should recognize a negative mixed fraciton" do
-    Fractional.mixed_fraction?("-1 11/12").should be true
+    Fractional.mixed_fraction?("-1 11/12").should be_true
   end
 
   it "should not recognize a single fraction" do
-    Fractional.mixed_fraction?("3/4").should be false
+    Fractional.mixed_fraction?("3/4").should be_false
   end
 end
