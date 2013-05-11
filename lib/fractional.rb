@@ -1,6 +1,8 @@
 require 'rational'
 
 class Fractional
+  @@single_fraction = /^\s*(\-?\d+)\/(\-?\d+)\s*$/
+  @@mixed_fraction = /^\s*(\-?\d*)\s+(\d+)\/(\d+)\s*$/
   
   def initialize(value)
     @value = value
@@ -24,7 +26,7 @@ class Fractional
     result = 0
     
     if mixed_fraction?(value)
-      whole, numerator, denominator = value.scan(/(\-?\d*)\s+(\d+)\/(\d+)/).flatten
+      whole, numerator, denominator = value.scan(@@mixed_fraction).flatten
       
       result = (numerator.to_f / denominator.to_f) + whole.to_f.abs
       
@@ -74,15 +76,15 @@ class Fractional
   private
     
   def self.fraction?(value)
-    value.to_s.count('/') == 1
+    value.is_a? String and (value.match(@@single_fraction) or value.match(@@mixed_fraction))
   end
 
   def self.single_fraction?(value)
-    fraction?(value) and !mixed_fraction?(value)
+    fraction?(value) and value.match(@@single_fraction)
   end
 
   def self.mixed_fraction?(value)
-    fraction?(value) and value.match(/\-?\d*\s+\d+\/\d+/)
+    fraction?(value) and value.match(@@mixed_fraction) 
   end
   
   def self.get_decimal_point_value(value)
