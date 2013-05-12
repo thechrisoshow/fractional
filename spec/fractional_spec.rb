@@ -211,6 +211,7 @@ describe "Frational", "fractional_from_parts" do
     Fractional.fractional_from_parts("5","8","144").should eq(Rational(3227,555))
     Fractional.fractional_from_parts("","58","3").should eq(Rational(7,12))
     Fractional.fractional_from_parts("","","012345679").should eq(Rational(1,81))
+    Fractional.fractional_from_parts("-0","","3333").should eq(Rational(-1,3))
   end
 end
 
@@ -238,7 +239,9 @@ end
 describe "Fractional", "find_before_decimal" do
   it "should return the decimal characters before the decimal" do
     Fractional.find_before_decimal("1.0333").should eq("1")
-    Fractional.find_before_decimal(".3333").should eq("")
+    Fractional.find_before_decimal(".3333").should eq("0")
+    Fractional.find_before_decimal("-1.4444").should eq("-1")
+    Fractional.find_before_decimal("-0.4444").should eq("-0")
   end
 end
 
@@ -319,7 +322,7 @@ describe "Fractional#to_s" do
   it "should return nice representations of mixed fractions" do
     Fractional.new(1.5).to_s.should == "3/2"
     Fractional.new(-1.3333).to_s.should == "-4/3"
-    Fractional.new(0.0).to_s.should == "0"
+    Fractional.new(0.0).to_s.should == "0/1"
   end
 
   it "should return mixed number representations if told so" do
@@ -379,3 +382,23 @@ describe "Fractional", "round" do
   #end
 end
 
+##################################
+# misc                           #
+##################################
+
+describe 'Fractional#whole_part' do
+  it "should return the whole part, if it exists, of a fraction" do
+    Fractional.new(Rational(3,2)).whole_part.should eq(1)
+    Fractional.new(Rational(-3,2)).whole_part.should eq(-1)
+    Fractional.new(Rational(1,2)).whole_part.should eq(0)
+  end
+end
+
+describe 'Fractional#fractional_part' do
+  it "should return the fractional part, if it exists, of a fraction" do
+    Fractional.new(Rational(3,2)).fractional_part.should eq(Fractional.new(Rational(1,2)))
+    Fractional.new(Rational(-3,2)).fractional_part.should eq(Fractional.new(Rational(-1,2)))
+    Fractional.new(Rational(1,2)).fractional_part.should eq(Fractional.new(Rational(1,2)))
+    Fractional.new(Rational(2,2)).fractional_part.should eq(Fractional.new(0))
+  end
+end
