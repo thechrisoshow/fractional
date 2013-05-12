@@ -1,6 +1,98 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Fractional", "to_f" do
+##################################
+# CLASS METHODS                  #
+##################################
+describe "Fractional::new" do
+
+end
+
+describe "Fractional::float_to_fractional" do
+
+end
+
+describe "Fractional::string_to_fractional" do
+
+end
+
+describe "Fractional::string_is_fraction?" do
+
+end
+
+describe "Fractional::string_is_mixed_fraction?" do
+
+end
+
+describe "Fractional::string_is_single_fraction?" do
+
+end
+
+
+##################################
+# Arithematic                    #
+##################################
+
+describe "Fractional#+", do
+
+end
+
+describe "Fractional#-", do
+
+end
+
+describe "Fractional#*", do
+
+end
+
+describe "Fractional#/", do
+
+end
+
+describe "Fractional#**", do
+
+end
+
+##################################
+# equality                       #
+##################################
+
+describe "Fractional#==", do
+
+end
+
+##################################
+# conversion                     #
+##################################
+
+describe "Fractional#to_s", do
+
+end
+
+describe "Fractional#to_f", do
+
+end
+
+describe "Fractional#to_r", do
+
+end
+
+describe "Fractional#to_i", do
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+describe "Fractional", "float_to_rational" do
 
   it "should parse '1/2' to 0.5" do
     Fractional.to_f('1/2').should == 0.5
