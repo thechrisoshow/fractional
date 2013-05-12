@@ -28,6 +28,9 @@ describe "Fractional::float_to_fractional" do
     Fractional.float_to_fraction(0.5).should == Fractional.new(Rational(1,2))
     Fractional.float_to_fraction(1.5).should == Fractional.new(Rational(3,2))
     Fractional.float_to_fraction(1100).should == Fractional.new(Rational(1100,1))
+    # This next example is especially important as Rational(1.2) is not a nice
+    # number.
+    Fractional.float_to_fraction(1.2).should == Fractional.new(Rational(6,5))
   end
 
   it "should parse more complex decimals" do
@@ -271,7 +274,20 @@ end
 ##################################
 
 describe "Fractional#+" do
+  it "should add with another Fractional" do
+    (Fractional.new(Rational(3,4)) + Fractional.new(Rational(1,2))).should == Fractional.new(1.25)
+  end
 
+  it "should add with other numerics" do
+    (Fractional.new(Rational(-4,5)) + 1).should == Fractional.new(Rational(1,5))
+    (Fractional.new("2/3") + 1.2).should == Fractional.new(1.86666666)
+    (Fractional.new(1.3) + BigDecimal.new(2)).should == Fractional.new("3.3")
+  end
+
+  it "should add with other numerics when other numerics are specified first" do
+    (1 + Fractional.new(Rational(-4,5)) ).should == Fractional.new(Rational(1,5))
+    (1.2 + Fractional.new("2/3")).should == Fractional.new(1.86666666)
+  end
 end
 
 describe "Fractional#-" do

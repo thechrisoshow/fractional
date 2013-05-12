@@ -5,21 +5,17 @@ class Fractional < Numeric
   MIXED_FRACTION = /^\s*(\-?\d*)\s+(\d+)\/(\d+)\s*$/
 
   def initialize( value, options={} )
-    # TODO 
-    # switch
-    if value.is_a? Rational
+    case value
+    when Rational
       @value = value
-    end
-    if value.is_a? String
+    when String
       @value = Fractional.string_to_fraction( value, options )
-    end
-    
-    if value.is_a? Float
-      @value = Fractional.float_to_fraction( value, options )
-    end
-
-    if value.is_a? Fixnum
+    when Fixnum
       @value = Rational(value)
+    when Numeric
+      @value = Fractional.float_to_fraction( value.to_f, options )
+    else 
+      raise TypeError, "Cannot instantiate Fractional from #{value.class}"
     end
 
   end
@@ -89,9 +85,9 @@ class Fractional < Numeric
   def coerce(other)
     case other
     when Numeric
-      return other.to_f, self.to_f
+      return Fractional.new(other), self
     when String
-      return Fractional.new(other).to_f, self.to_f
+      return Fractional.new(other), self
     else
       raise TypeError, "#{other.class} cannot be coerced into #{Numeric}"
     end
@@ -100,7 +96,13 @@ class Fractional < Numeric
 
   [:+, :-, :*, :/, :**].each do |math_operator|
     define_method(math_operator) do |another_fractional|
-      Fractional.new(self.to_r.send(math_operator, another_fractional))
+      if another_fractional.is_a? Fractional or another_fractional.is_a? Rational
+        Fractional.new(@value.send(math_operator, another_fractional.to_r)) 
+      elsif another_fractional.is_a? Numeric
+        self.send(math_operator, Fractional.new(another_fractional))
+      else
+        Fractional.new(self.to_r.send(math_operator, another_fractional))
+      end
     end
   end
 
@@ -122,7 +124,8 @@ class Fractional < Numeric
     end
 
     # finally assume a simple decimal 
-    return Rational(value)
+    # The to_s helps with float rounding issues
+    return Rational(value.to_s)
 
   end
 
