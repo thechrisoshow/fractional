@@ -64,11 +64,6 @@ class Fractional < Numeric
     @value == other_num
   end
 
-
-  # TODO add numeric
-
-  # TODO add boolean operators
-
   def <=>(other)
     case other
     when Fractional, Rational

@@ -287,23 +287,24 @@ describe "Fractional#+" do
   it "should add with other numerics when other numerics are specified first" do
     (1 + Fractional.new(Rational(-4,5)) ).should == Fractional.new(Rational(1,5))
     (1.2 + Fractional.new("2/3")).should == Fractional.new(1.86666666)
+    (BigDecimal.new(2) + Fractional.new(1.3)).should == Fractional.new("3.3")
   end
 end
 
 describe "Fractional#-" do
-
+  (1 - Fractional.new(Rational(1,2))).should == Fractional.new(Rational(1,2))
 end
 
 describe "Fractional#*" do
-
+  (Fractional.new(Rational(1,2)) * Fractional.new(0.75)).should == Fractional.new(0.375)
 end
 
 describe "Fractional#/" do
-
+  (Fractional.new(Rational(4,3)) / Fractional.new(Rational(3,2))).should == Fractional.new(Rational(8,9))
 end
 
 describe "Fractional#**" do
-
+  (Fractional.new(8) ** Fractional.new(Rational(1,3))).should == Fractional.new(2)
 end
 
 ##################################
