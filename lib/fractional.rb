@@ -24,29 +24,48 @@ class Fractional
 
   end
 
-  def to_s( options={} ) #mixed_fraction: true
-    if options[:mixed_fraction]
-
+  def to_s( options={} )
+    if options[:mixed_fraction] or options[:mixed_number]
+      to_join = []
+      if whole_part != 0
+        to_join << whole_part.to_s
+      end
+      if fractional_part != 0
+        to_join << fractional_part.abs.to_s 
+      end
+      to_join.join(" ")
     else
       @value.to_s
     end
   end
 
   def to_f
-
+    @value.to_f
   end
 
   def to_r
-
+    @value
   end
 
   def to_i
+    whole_part
+  end
 
+  def whole_part
+    @value.truncate
+  end
+
+  def fractional_part
+    @value - whole_part
   end
 
   def ==( other_num )
     @value == other_num
   end
+
+  # TODO add numeric
+
+  # TODO add boolean operators
 
   [:+, :-, :*, :/, :**].each do |math_operator|
     define_method(math_operator) do |another_fractional|
@@ -126,9 +145,9 @@ class Fractional
   end
 
   def self.find_before_decimal( decimal )
-    numeric = decimal.to_f.floor.to_i
+    numeric = decimal.to_f.truncate.to_i
     if numeric == 0
-      ""
+      decimal.to_f < 0 ? "-0" : "0"
     else
       numeric.to_s
     end
