@@ -176,6 +176,14 @@ class Fractional
     return Rational( numerator, denominator )
   end
 
+  def self.round_to_nearest_fraction(value, to_nearest_fraction)
+    to_nearest_float = Fractional.new(to_nearest_fraction).to_f
+    Fractional.new((Fractional.new(value).to_f / to_nearest_float).round * to_nearest_float)
+  end
+
+  #def self.rationalize( eps=0 )
+    #Fractional.new(Fractional.new(value).to_r.rationalize(Fractional.new(to_nearest_fraction).to_r))
+  #end
 
 
 

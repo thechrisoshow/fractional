@@ -347,39 +347,42 @@ describe "Fractional#to_r" do
 end
 
 describe "Fractional#to_i" do
-  # TODO
+  it "should return a truncated value" do
+    Fractional.new("1 3/4").to_i.should == 1
+    Fractional.new("-2 1/3").to_i.should == -2
+  end
 end
 
 describe "Fractional", "round" do
 
-  #it "should round 0.142857142857143 to nearest 1/64th as 0.140625" do
-    #Fractional.round_to_nearest_fraction(0.142857142857143, "1/64").should == 0.140625
-  #end
+  it "should round 0.142857142857143 to nearest 1/64th as 0.140625" do
+    Fractional.round_to_nearest_fraction(0.142857142857143, "1/64").should == Fractional.new(0.140625)
+  end
 
-  #it "should round '1/7' to nearest 1/64th as '9/64'" do
-    #Fractional.round_to_nearest_fraction('1/7', "1/64").should == '9/64'
-  #end
+  it "should round '1/7' to nearest 1/64th as '9/64'" do
+    Fractional.round_to_nearest_fraction('1/7', "1/64").should == Fractional.new('9/64')
+  end
 
-  #it "should round 0.125 to nearest 1/64th as 0.125" do
-    #Fractional.round_to_nearest_fraction(0.125, "1/64").should == 0.125
-  #end
+  it "should round 0.125 to nearest 1/64th as 0.125" do
+    Fractional.round_to_nearest_fraction(0.125, "1/64").should == Fractional.new(0.125)
+  end
 
-  #it "should round '1100 1/7' to nearest 1/64th as '1100 9/64'" do
-    #Fractional.round_to_nearest_fraction('1100 1/7', "1/64").should == '1100 9/64'
-  #end
+  it "should round '1100 1/7' to nearest 1/64th as '1100 9/64'" do
+    Fractional.round_to_nearest_fraction('1100 1/7', "1/64").should == Fractional.new('70409/64')
+  end
 
-  #it "should round 1100.142857142857143 to nearest 1/64th as 1100.140625" do
-    #Fractional.round_to_nearest_fraction(1100.142857142857143, "1/64").should == 1100.140625
-  #end
+  it "should round 1100.142857142857143 to nearest 1/64th as 1100.140625" do
+    Fractional.round_to_nearest_fraction(1100.142857142857143, "1/64").should == Fractional.new(1100.140625)
+  end
 
-  #it "should round if passed 'to_nearest' that rounds to nearest whole number" do
-    #Fractional.round_to_nearest_fraction(1100.875, "1/2").should == 1101
-    #Fractional.round_to_nearest_fraction(1100.1, "1/2").should == 1100
-  #end
+  it "should round if passed 'to_nearest' that rounds to nearest whole number" do
+    Fractional.round_to_nearest_fraction(1100.875, "1/2").should == Fractional.new(1101)
+    Fractional.round_to_nearest_fraction(1100.1, "1/2").should == Fractional.new(1100)
+  end
 
-  #it "should round if passed a float" do
-    #Fractional.round_to_nearest_fraction(1100.875, 0.5).should == 1101
-  #end
+  it "should round if passed a float" do
+    Fractional.round_to_nearest_fraction(1100.875, 0.5).should == Fractional.new(1101)
+  end
 end
 
 ##################################
