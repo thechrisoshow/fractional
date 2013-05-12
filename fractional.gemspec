@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "fractional"
-  spec.version       = "0.1.0"
+  spec.version       = "1.0.1"
   spec.authors       = ["Chris O'Sullivan"]
   spec.email         = ["thechrisoshow@gmail.com"]
   spec.description   = %q{Fractional is a Ruby library for parsing fractions.}
@@ -16,4 +16,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency "debugger"
 end
