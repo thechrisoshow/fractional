@@ -16,6 +16,11 @@ describe "Fractional::new" do
     Fractional.new(0.75).should_not be_nil
   end
 
+  it "should pass options down (such as exact)" do
+    Fractional.new(0.333, exact: true).should_not == Rational(1,3)
+    Fractional.new("0.333", exact: true).should_not == Rational(1,3)
+  end
+
 end
 
 describe "Fractional::float_to_fractional" do
@@ -93,6 +98,14 @@ describe "Fractional::string_to_fractional" do
 
   it "should ignore repeated whitespace" do
     Fractional.string_to_fraction("6   5/8").should == Fractional.string_to_fraction("6 5/8")
+  end
+
+  it "should try to get an accurate estimation of floating point values by default" do
+    Fractional.string_to_fraction("0.3333").should == Fractional.float_to_fraction(0.33333)
+  end
+
+  it "should not estimate if exact is specified" do
+    Fractional.string_to_fraction("0.3333", exact: true).should_not == Rational(1,3)
   end
 
 end
@@ -190,6 +203,65 @@ describe "Fractional::string_is_single_fraction?" do
 
 end
 
+describe "Frational", "fractional_from_parts" do
+  it "should return rational values for various decimals" do
+    Fractional.fractional_from_parts("","","3").should eq(Rational(1,3))
+    Fractional.fractional_from_parts("","","7").should eq(Rational(7,9))
+    Fractional.fractional_from_parts("","","9").should eq(Rational(1,1))
+    Fractional.fractional_from_parts("5","8","144").should eq(Rational(3227,555))
+    Fractional.fractional_from_parts("","58","3").should eq(Rational(7,12))
+    Fractional.fractional_from_parts("","","012345679").should eq(Rational(1,81))
+  end
+end
+
+describe "Fractional", "find_repeat" do
+  it "should return the repeating decimals in a string" do
+    Fractional.find_repeat("1.0333").should eq("3")
+    Fractional.find_repeat("0.333").should eq("3")
+    Fractional.find_repeat("3.142857142857").should eq("142857")
+  end
+
+  it "should return nil when there are not enough repeating decimals" do
+    Fractional.find_repeat("1.03").should eq("")
+  end
+end
+
+describe "Fractional", "find_after_decimal" do
+  it "should return the decimal characters after the decimal but before the repeating characters" do
+    Fractional.find_after_decimal("1.0333").should eq("0")
+    Fractional.find_after_decimal("0.3333").should eq("")
+    Fractional.find_after_decimal("0.58333").should eq("58")
+  end
+end
+
+
+describe "Fractional", "find_before_decimal" do
+  it "should return the decimal characters before the decimal" do
+    Fractional.find_before_decimal("1.0333").should eq("1")
+    Fractional.find_before_decimal(".3333").should eq("")
+  end
+end
+
+describe "Fractional", "float_to_rational_repeat" do
+  it "should parse a repeating decimal into a fractional value" do
+    Fractional.float_to_rational_repeat("0.33").should eq(Rational(1,3))
+    Fractional.float_to_rational_repeat(".33").should eq(Rational(1,3))
+    Fractional.float_to_rational_repeat("0.8181").should eq(Rational(9,11))
+    Fractional.float_to_rational_repeat("3.142857142857").should eq(Rational(22,7))
+    Fractional.float_to_rational_repeat("-0.33333").should eq(Rational(-1,3))
+  end
+
+  it "should be able to deal with a rounding error at the end of a float value" do
+    Fractional.string_to_fraction("3.1666666666666665").should eq(Rational(19,6))
+  end
+
+  it "should not be able to parse a non repeating decimal" do
+    Fractional.float_to_rational_repeat("1.234").should be_nil
+    Fractional.float_to_rational_repeat("1.333312").should be_nil
+    Fractional.float_to_rational_repeat("as2342").should be_nil
+  end
+end
+
 
 ##################################
 # Arithematic                    #
@@ -238,19 +310,41 @@ end
 ##################################
 
 describe "Fractional#to_s" do
+  it "should return nice representations of single fractions" do
+    Fractional.new(0.75).to_s.should == "3/4"
+    Fractional.new(-0.3333).to_s.should == "-1/3"
+    
+  end
 
+  it "should return nice representations of mixed fractions" do
+    Fractional.new(1.5).to_s.should == "3/2"
+    Fractional.new(-1.3333).to_s.should == "-4/3"
+    Fractional.new(0.0).to_s.should == "0"
+  end
+
+  it "should return mixed number representations if told so" do
+    Fractional.new(1.5).to_s(mixed_number: true).should == "1 1/2"
+    Fractional.new(Rational(-3,2)).to_s(mixed_number: true).should == "-1 1/2"
+    Fractional.new(1.00).to_s(mixed_number: true).should == "1"
+    Fractional.new(0.75).to_s(mixed_number: true).should == "3/4"
+  end
 end
 
 describe "Fractional#to_f" do
-
+  it "should return float representations of fractions" do
+    Fractional.new("3/4").to_f.should == 0.75
+    Fractional.new("-2/3").to_f.should be_within(0.0000001).of(-0.6666666)
+  end
 end
 
 describe "Fractional#to_r" do
-
+  it "should return a rational representation" do
+    Fractional.new("3/4").to_r.should == Rational(3,4)
+  end
 end
 
 describe "Fractional#to_i" do
-
+  # TODO
 end
 
 describe "Fractional", "round" do
