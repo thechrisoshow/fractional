@@ -4,30 +4,30 @@ Fractional is a library for parsing, representing and operating on fractions.
 
 === Conversions
 
-Convert fractional string to float:
+Convert fractional strings to floats:
  Fractional.new("1100 7/8").to_f #=> 1100.875
 
-Convert float to fractional string:
+Convert floats to fractional strings:
  Fractional.new(1100.875).to_s   #=> "1100 7/8"
  Fractional.new(1100.875, :to_nearest => "1/2").to_s #=> "1101"
 
-Also does a great job of guessing repeating decimal values
+Also does a great job of guessing repeating decimal values:
  Fractional.new(0.33333).to_s    #=> "1/3"
  Fractional.new(3.142857142857).to_s    #=> "22/7"
 If you want to prevent this "guesswork" pass the :exact option
- Fractional.new(0.33333, exact: true).to_f  #=> 0.33333
+ Fractional.new(0.33333, exact: true).to_s  #=> "33333/100000"
 
-It can render back out mixed numbers
+It can render back out mixed numbers:
  Fractional.new(1.45).to_s  #=> "29/20"
  Fractional.new(1.45).to_s( mixed_number: true )  #=> "1 9/20"
 
 
 === Math and Comparisons
-It will integrate nicely with Numerics
+It will integrate nicely with Numerics:
  a = Fractional.new("3/4")
  puts a + 1.5   #=>  "9/4"
 
-And you can compare it to other Numerics
+And you can compare it to other Numerics:
  puts Fractional.new("3/4") > -2.3    #=> true
 
 === Rounding
