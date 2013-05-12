@@ -42,30 +42,30 @@ describe "Fractional::float_to_fractional" do
     Fractional.float_to_fraction(-0.875).should == Fractional.new(Rational(-7,8))
   end
 
-  #it "should allow for negative mixed fractions that that are rounded" do
-    #Fractional.float_to_fraction(-101.140625, :to_nearest => "1/64").should == "-101 9/64"
-  #end
+  it "should allow for negative mixed fractions that that are rounded" do
+    Fractional.float_to_fraction(-101.140625, :to_nearest => "1/64").should == Fractional.new("-101 9/64")
+  end
 
-  #it "should allow for negative single fractions that that are rounded" do
-    #Fractional.float_to_fraction(-0.140625, :to_nearest => "1/64").should == "-9/64"
-  #end
+  it "should allow for negative single fractions that that are rounded" do
+    Fractional.float_to_fraction(-0.140625, :to_nearest => "1/64").should == Fractional.new("-9/64")
+  end
 
-  #it "should round if passed 'to nearest'" do
-    #Fractional.float_to_fraction(1100.14285714286, :to_nearest => "1/64").should == "1100 9/64"
-  #end
+  it "should round if passed 'to nearest'" do
+    Fractional.float_to_fraction(1100.14285714286, :to_nearest => "1/64").should == Fractional.new("1100 9/64")
+  end
 
-  #it "should round if passed 'to_nearest' that is a float" do
-    #Fractional.float_to_fraction(1100.14285714286, :to_nearest => 0.015625).should == "1100 9/64"
-  #end
+  it "should round if passed 'to_nearest' that is a float" do
+    Fractional.float_to_fraction(1100.14285714286, :to_nearest => 0.015625).should == Fractional.new("1100 9/64")
+  end
 
-  #it "should round if passed 'to_nearest' and is a simple fraction" do
-    #Fractional.float_to_fraction(0.14285714286, :to_nearest => "1/64").should == "9/64"
-  #end
+  it "should round if passed 'to_nearest' and is a simple fraction" do
+    Fractional.float_to_fraction(0.14285714286, :to_nearest => "1/64").should == Fractional.new("9/64")
+  end
 
-  #it "should round if passed 'to_nearest' that rounds to nearest whole number" do
-    #Fractional.float_to_fraction(1100.875, :to_nearest => "1/2").should == "1101"
-    #Fractional.float_to_fraction(1100.2, :to_nearest => "1/2").should == "1100"
-  #end
+  it "should round if passed 'to_nearest' that rounds to nearest whole number" do
+    Fractional.float_to_fraction(1100.875, :to_nearest => "1/2").should == Fractional.new("1101")
+    Fractional.float_to_fraction(1100.2, :to_nearest => "1/2").should == Fractional.new("1100")
+  end
 
 end
 
@@ -291,7 +291,7 @@ describe "Fractional#**" do
 end
 
 ##################################
-# equality                       #
+# comparison                     #
 ##################################
 
 describe "Fractional#==" do
@@ -305,6 +305,40 @@ describe "Fractional#==" do
 
   it "should be equal regardless of type" do
     (Fractional.new(Rational(3,4)) == Fractional.new(0.75)).should be_true
+  end
+end
+
+describe "Frational#<=>" do
+  it "should return 0 if fractions are equal" do
+    (Fractional.new(Rational(5,4)) <=> Fractional.new(1.25)).should == 0
+  end
+  
+  it "should return -1 if the lhs is less" do
+    (Fractional.new(Rational(3,4)) <=> Fractional.new(Rational(8,9))).should == -1
+  end
+
+  it "should compare to other numerics" do
+    (Fractional.new(Rational(-1,2)) <=> -0.5).should == 0
+    (Fractional.new(Rational(-1,2)) <=> 1).should == -1
+    (Fractional.new(Rational(-1,2)) <=> BigDecimal.new(-2)).should == 1
+  end
+
+  it "should work the other way too" do
+    ( -0.5 <=> Fractional.new(Rational(-1,2))).should == 0
+    (1 <=> Fractional.new(Rational(-1,2))).should == 1
+    (BigDecimal.new(-2) <=> Fractional.new(Rational(-1,2))).should == -1
+  end
+
+  it "would be nice to compare to strings" do
+    (Fractional.new(Rational(1,2)) <=> "3/4").should == -1
+    ("3/4" <=> Fractional.new(Rational(1,2))).should == 1
+    ("-3/4" <=> Fractional.new(Rational(-1,2))).should == -1
+  end
+end
+
+describe "Frational", "comparsion" do
+  it "should use the numerics included comparsion module" do
+    (Fractional.new(Rational(-3,4)) < Fractional.new(Rational(1,2))).should be_true
   end
 end
 
