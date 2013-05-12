@@ -4,12 +4,32 @@ class Fractional
   SINGLE_FRACTION = /^\s*(\-?\d+)\/(\-?\d+)\s*$/
   MIXED_FRACTION = /^\s*(\-?\d*)\s+(\d+)\/(\d+)\s*$/
 
-  def initialize( value )
+  def initialize( value, options={} )
+    # TODO 
+    # switch
+    if value.is_a? Rational
+      @value = value
+    end
+    if value.is_a? String
+      @value = Fractional.string_to_fraction( value, options )
+    end
+    
+    if value.is_a? Float
+      @value = Fractional.float_to_fraction( value, options )
+    end
+
+    if value.is_a? Fixnum
+      @value = Rational(value)
+    end
 
   end
 
-  def to_s( options = {} ) #mixed_fraction: true
+  def to_s( options={} ) #mixed_fraction: true
+    if options[:mixed_fraction]
 
+    else
+      @value.to_s
+    end
   end
 
   def to_f
@@ -24,8 +44,8 @@ class Fractional
 
   end
 
-  def ==
-
+  def ==( other_num )
+    @value == other_num
   end
 
   [:+, :-, :*, :/, :**].each do |math_operator|
@@ -34,29 +54,108 @@ class Fractional
     end
   end
 
-  def self.float_to_fractional
+  def self.float_to_fraction( value, options={} )
+    if value.to_f.nan?
+      return Rational(0,0) # Div by zero error
+    elsif value.to_f.infinite?
+      return Rational(value<0 ? -1 : 1,0) # Div by zero error
+    end
+
+    # first try to convert a repeating decimal unless guesstimate is forbidden
+    unless options[:exact]
+      repeat = float_to_rational_repeat(value)
+      return repeat unless repeat.nil?
+    end
+
+    # finally assume a simple decimal 
+    return Rational(value)
 
   end
 
-  def self.string_to_fractional
-
+  def self.string_to_fraction( value, options={} )
+    if string_is_mixed_fraction?(value)
+      whole, numerator, denominator = value.scan(MIXED_FRACTION).flatten
+      return Rational( (whole.to_i.abs * denominator.to_i + numerator.to_i) *
+                      whole.to_i / whole.to_i.abs, denominator.to_i )
+    elsif string_is_single_fraction?(value)
+      numerator, denominator = value.split("/")
+      return Rational(numerator.to_i, denominator.to_i)
+    else
+      return float_to_fraction(value.to_f, options)
+    end
   end
 
-  def self.string_is_fraction?
-
+  def self.string_is_fraction?( value )
+    value.is_a? String and (value.match(SINGLE_FRACTION) or value.match(MIXED_FRACTION))
   end
 
-  def self.string_is_mixed_fraction?
-
+  def self.string_is_mixed_fraction?( value )
+    string_is_fraction?(value) and value.match(MIXED_FRACTION)
   end
 
-  def self.string_is_single_fraction?
-
+  def self.string_is_single_fraction?( value )
+    string_is_fraction?(value) and value.match(SINGLE_FRACTION)
   end
 
+  def self.float_to_rational_repeat(base_value)
+    normalized_value = base_value.to_f
+    repeat = find_repeat( normalized_value )
 
+    if repeat.nil? or repeat.length < 1
+      # try again chomping off the last number (fixes float rounding issues)
+      normalized_value = normalized_value.to_s[0...-1].to_f
+      repeat = find_repeat(normalized_value.to_s)
+    end
+    
+    if !repeat or repeat.length < 1
+      return nil
+    else
+      return fractional_from_parts(
+        find_before_decimal(normalized_value), 
+        find_after_decimal(normalized_value),
+        repeat)
+    end
+  end
 
+  def self.find_after_decimal( decimal )
+    s_decimal = decimal.to_s
+    regex = /(#{find_repeat(s_decimal)})+/
+    last = s_decimal.index( regex )
+    first = s_decimal.index( '.' ) + 1
+    s_decimal[first...last]
+  end
 
+  def self.find_before_decimal( decimal )
+    numeric = decimal.to_f.floor.to_i
+    if numeric == 0
+      ""
+    else
+      numeric.to_s
+    end
+  end
+
+  def self.find_repeat( decimal )
+    return largest_repeat( decimal.to_s.reverse, 0 ).reverse
+  end
+
+  def self.largest_repeat( string, i )
+    if i * 2 > string.length
+      return ""
+    end
+    repeat_string = string[0..i]
+    next_best = largest_repeat( string, i + 1)
+    if repeat_string == string[i+1..2*i + 1]
+      repeat_string.length > next_best.length ? repeat_string : next_best
+    else
+      next_best
+    end
+  end
+
+  def self.fractional_from_parts(before_decimal, after_decimal, repeat)
+    numerator = "#{before_decimal}#{after_decimal}#{repeat}".to_i - "#{before_decimal}#{after_decimal}".to_i
+    denominator = 10 ** (after_decimal.length + repeat.length) - 10 ** after_decimal.length
+    return Rational( numerator, denominator )
+  end
 
 
 
