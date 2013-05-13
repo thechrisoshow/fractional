@@ -329,7 +329,7 @@ describe "Frational#<=>" do
   it "should return 0 if fractions are equal" do
     (Fractional.new(Rational(5,4)) <=> Fractional.new(1.25)).should == 0
   end
-  
+
   it "should return -1 if the lhs is less" do
     (Fractional.new(Rational(3,4)) <=> Fractional.new(Rational(8,9))).should == -1
   end
@@ -367,7 +367,7 @@ describe "Fractional#to_s" do
   it "should return nice representations of single fractions" do
     Fractional.new(0.75).to_s.should == "3/4"
     Fractional.new(-0.3333).to_s.should == "-1/3"
-    
+
   end
 
   it "should return nice representations of mixed fractions" do
@@ -454,5 +454,33 @@ describe 'Fractional#fractional_part' do
     Fractional.new(Rational(-3,2)).fractional_part.should eq(Fractional.new(Rational(-1,2)))
     Fractional.new(Rational(1,2)).fractional_part.should eq(Fractional.new(Rational(1,2)))
     Fractional.new(Rational(2,2)).fractional_part.should eq(Fractional.new(0))
+  end
+end
+
+
+##################################
+# deprecated methods             #
+##################################
+# remove in v1.1
+describe "deprecated methods" do
+  it "Fractional.to_f" do
+    Fractional.to_f(1.5).should == 1.5
+  end
+
+  it "Fractional.to_s" do
+    Fractional.to_s(0.5).should == '1/2'
+    Fractional.to_s(-0.140625, :to_nearest => "1/64").should == "-9/64"
+  end
+
+  it "Fraction.fraction?" do
+    Fractional.fraction?("3/4").should be_true
+  end
+
+  it "Fraction.mixed_fraction?" do
+    Fractional.mixed_fraction?("1 11/12").should be_true
+  end
+
+  it "Fraction.single_fraction?" do
+     Fractional.single_fraction?("-3/4").should be_true
   end
 end

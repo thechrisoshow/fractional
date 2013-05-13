@@ -1,6 +1,9 @@
 require 'rational'
+require 'deprecated'
 
 class Fractional < Numeric
+  extend DeprecatedFractionalMethods
+
   SINGLE_FRACTION = /^\s*(\-?\d+)\/(\-?\d+)\s*$/
   MIXED_FRACTION = /^\s*(\-?\d*)\s+(\d+)\/(\d+)\s*$/
 
@@ -14,7 +17,7 @@ class Fractional < Numeric
       @value = Rational(value)
     when Numeric
       @value = Fractional.float_to_fraction( value.to_f, options )
-    else 
+    else
       raise TypeError, "Cannot instantiate Fractional from #{value.class}"
     end
 
@@ -32,7 +35,7 @@ class Fractional < Numeric
         to_join << whole_part.to_s
       end
       if fractional_part != 0
-        to_join << fractional_part.abs.to_s 
+        to_join << fractional_part.abs.to_s
       end
       to_join.join(" ")
     else
@@ -92,7 +95,7 @@ class Fractional < Numeric
   [:+, :-, :*, :/, :**].each do |math_operator|
     define_method(math_operator) do |another_fractional|
       if another_fractional.is_a? Fractional or another_fractional.is_a? Rational
-        Fractional.new(@value.send(math_operator, another_fractional.to_r)) 
+        Fractional.new(@value.send(math_operator, another_fractional.to_r))
       elsif another_fractional.is_a? Numeric
         self.send(math_operator, Fractional.new(another_fractional))
       else
@@ -118,7 +121,7 @@ class Fractional < Numeric
       return repeat unless repeat.nil?
     end
 
-    # finally assume a simple decimal 
+    # finally assume a simple decimal
     # The to_s helps with float rounding issues
     return Rational(value.to_s)
 
@@ -158,12 +161,12 @@ class Fractional < Numeric
       normalized_value = normalized_value.to_s[0...-1].to_f
       repeat = find_repeat(normalized_value.to_s)
     end
-    
+
     if !repeat or repeat.length < 1
       return nil
     else
       return fractional_from_parts(
-        find_before_decimal(normalized_value), 
+        find_before_decimal(normalized_value),
         find_after_decimal(normalized_value),
         repeat)
     end
