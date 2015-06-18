@@ -11,8 +11,18 @@ Convert floats to fractional strings:
  Fractional.new(1100.875).to_s   #=> "1100 7/8"
  Fractional.new(1100.875, :to_nearest => "1/2").to_s #=> "1101"
 
-Convert to human-friendly fractions
+Convert to human-friendly fractions:
  Fractional.new(-1.331, :to_human).to_s #=> "-1 1/3"
+
+ Consider the following example:
+
+ Fractional.new(1.339999).to_s => "67/50"
+ Fractional.new(1.339999).to_s(mixed_number: true) => "1 17/50"
+
+ This is not very human-friendly if we're talking about amounts in cooking recipes, especially when we need to convert from Kg to Pounds etc. Instead use:
+
+ Fractional.new(1.339999, to_human: true).to_s => "1 1/3"
+
 
 Also does a great job of guessing repeating decimal values:
  Fractional.new(0.33333).to_s    #=> "1/3"
