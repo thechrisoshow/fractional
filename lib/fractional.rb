@@ -14,7 +14,11 @@ class Fractional < Numeric
     when String
       @value = Fractional.string_to_fraction( value, options )
     when Fixnum
-      @value = Rational(value)
+      if @value == @value.to_i
+        @value = Rational(value)
+      else # It's still Rational if it's a natural number
+        @value = Fractional.float_to_fraction( value.to_f, options )
+      end
     when Numeric
       @value = Fractional.float_to_fraction( value.to_f, options )
     else
@@ -113,6 +117,10 @@ class Fractional < Numeric
 
     if options[:to_nearest]
       return self.round_to_nearest_fraction( value, options[:to_nearest] )
+    end
+
+    if options[:to_human]
+      return self.round_to_human_fraction( value )
     end
 
     # first try to convert a repeating decimal unless guesstimate is forbidden
@@ -215,6 +223,29 @@ class Fractional < Numeric
   def self.round_to_nearest_fraction(value, to_nearest_fraction)
     to_nearest_float = Fractional.new(to_nearest_fraction).to_f
     Fractional.new((Fractional.new(value).to_f / to_nearest_float).round * to_nearest_float)
+  end
+
+  def self.numeric_to_mixed_number(amount)
+    sign_prefix = ( amount < 0 )? '-' : ''
+    amount = amount.abs
+    amount_as_integer = amount.to_i
+    if (amount_as_integer != amount.to_f) && (amount_as_integer > 0)
+      fraction = amount - amount_as_integer
+      "#{sign_prefix}#{amount_as_integer} #{fraction}"
+    else
+      if amount.denominator == 1
+        "#{sign_prefix}#{amount_as_integer}"
+      else
+        sign_prefix + amount.to_s
+      end
+    end
+  end
+
+  # Display numbers in human-readable manner. 
+  #  Examples: 0.5 -> 1/2, 2.333 -> 2 1/3, 0.666 -> 2/3 etc. 
+  #
+  def self.round_to_human_fraction(value)
+    numeric_to_mixed_number value.rationalize(Rational('0.01'))
   end
 
 end
