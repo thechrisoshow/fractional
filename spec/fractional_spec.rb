@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'byebug'
 
 ##################################
 # CLASS METHODS                  #
@@ -115,93 +116,93 @@ end
 
 describe "Fractional::string_is_fraction?" do
   it "should recognize a simple fraction" do
-    Fractional.string_is_fraction?("3/4").should be_true
+    Fractional.string_is_fraction?("3/4").should be_truthy
   end
 
   it "should recognize a mixed fraction" do
-    Fractional.string_is_fraction?("1 11/12").should be_true
+    Fractional.string_is_fraction?("1 11/12").should be_truthy
   end
 
   it "should recognize a negative fraction" do
-    Fractional.string_is_fraction?("-3/4").should be_true
+    Fractional.string_is_fraction?("-3/4").should be_truthy
   end
 
   it "should recognize a negative mixed fraction" do
-    Fractional.string_is_fraction?("-6 2/9").should be_true
+    Fractional.string_is_fraction?("-6 2/9").should be_truthy
   end
 
   it "should accept more than one space between the whole number and fractional part" do
-    Fractional.string_is_fraction?("1  2/3").should be_true
-    Fractional.string_is_fraction?("3               1/2").should be_true
+    Fractional.string_is_fraction?("1  2/3").should be_truthy
+    Fractional.string_is_fraction?("3               1/2").should be_truthy
   end
 
   it "should accept fractions with front and rear padding" do
-    Fractional.string_is_fraction?("     2/3").should be_true
-    Fractional.string_is_fraction?("2/3      ").should be_true
-    Fractional.string_is_fraction?("      2/3     ").should be_true
-    Fractional.string_is_fraction?("   1 2/3").should be_true
-    Fractional.string_is_fraction?("1 2/3      ").should be_true
-    Fractional.string_is_fraction?("    1 2/3   ").should be_true
+    Fractional.string_is_fraction?("     2/3").should be_truthy
+    Fractional.string_is_fraction?("2/3      ").should be_truthy
+    Fractional.string_is_fraction?("      2/3     ").should be_truthy
+    Fractional.string_is_fraction?("   1 2/3").should be_truthy
+    Fractional.string_is_fraction?("1 2/3      ").should be_truthy
+    Fractional.string_is_fraction?("    1 2/3   ").should be_truthy
   end
 
   it "should not recognize decimals" do
-    Fractional.string_is_fraction?("2.3").should be_false
+    Fractional.string_is_fraction?("2.3").should be_falsey
   end
 
   it "should not recognize two consecutive fractions" do
-    Fractional.string_is_fraction?("2/3 9/5").should be_false
+    Fractional.string_is_fraction?("2/3 9/5").should be_falsey
   end
 
   it "should not recognize a string with a slash" do
-    Fractional.string_is_fraction?("n/a").should be_false
+    Fractional.string_is_fraction?("n/a").should be_falsey
   end
 
   it "should not recognize a fraction mixed with non-decimals" do
-    Fractional.string_is_fraction?("3a/4").should be_false
-    Fractional.string_is_fraction?("a2/3").should be_false
-    Fractional.string_is_fraction?("1 2/3a").should be_false
+    Fractional.string_is_fraction?("3a/4").should be_falsey
+    Fractional.string_is_fraction?("a2/3").should be_falsey
+    Fractional.string_is_fraction?("1 2/3a").should be_falsey
   end
 
   it "should not recognize fractions with improper spacing" do
-    Fractional.string_is_fraction?("2 /2").should be_false
-    Fractional.string_is_fraction?("1/ 3").should be_false
-    Fractional.string_is_fraction?("1  2/  3").should be_false
-    Fractional.string_is_fraction?("1 2    /3").should be_false
+    Fractional.string_is_fraction?("2 /2").should be_falsey
+    Fractional.string_is_fraction?("1/ 3").should be_falsey
+    Fractional.string_is_fraction?("1  2/  3").should be_falsey
+    Fractional.string_is_fraction?("1 2    /3").should be_falsey
   end
 
 end
 
 describe "Fractional::string_is_mixed_fraction?" do
   it "should recognize a mixed fraction" do
-    Fractional.string_is_mixed_fraction?("1 11/12").should be_true
+    Fractional.string_is_mixed_fraction?("1 11/12").should be_truthy
   end
 
   it "should recognize a negative mixed fraciton" do
-    Fractional.string_is_mixed_fraction?("-1 11/12").should be_true
+    Fractional.string_is_mixed_fraction?("-1 11/12").should be_truthy
   end
 
   it "should not recognize a single fraction" do
-    Fractional.string_is_mixed_fraction?("3/4").should be_false
+    Fractional.string_is_mixed_fraction?("3/4").should be_falsey
   end
 
 end
 
 describe "Fractional::string_is_single_fraction?" do
   it "should recognize a single fraction" do
-    Fractional.string_is_single_fraction?("3/4").should be_true
+    Fractional.string_is_single_fraction?("3/4").should be_truthy
   end
 
   it "should recognize a negative numerator with a single fraction" do
-    Fractional.string_is_single_fraction?("-3/4").should be_true
+    Fractional.string_is_single_fraction?("-3/4").should be_truthy
   end
 
   it "should not recognize a mixed fraction" do
-    Fractional.string_is_single_fraction?("1 11/12").should be_false
+    Fractional.string_is_single_fraction?("1 11/12").should be_falsey
   end
 
   it "should allow for negative denominators in single fractions" do
-    Fractional.string_is_single_fraction?("1/-64").should be_true
-    Fractional.string_is_single_fraction?("-1/-64").should be_true
+    Fractional.string_is_single_fraction?("1/-64").should be_truthy
+    Fractional.string_is_single_fraction?("-1/-64").should be_truthy
   end
 
 end
@@ -313,15 +314,15 @@ end
 
 describe "Fractional#==" do
   it "should be equal to same Fractions" do
-    (Fractional.new(Rational(3,1)) == Fractional.new(Rational(3,1))).should be_true
+    (Fractional.new(Rational(3,1)) == Fractional.new(Rational(3,1))).should be_truthy
   end
 
   it "should not be equal to other Fractions" do
-    (Fractional.new(Rational(3,2)) == Fractional.new(Rational(3,1))).should be_false
+    (Fractional.new(Rational(3,2)) == Fractional.new(Rational(3,1))).should be_falsey
   end
 
   it "should be equal regardless of type" do
-    (Fractional.new(Rational(3,4)) == Fractional.new(0.75)).should be_true
+    (Fractional.new(Rational(3,4)) == Fractional.new(0.75)).should be_truthy
   end
 end
 
@@ -355,7 +356,7 @@ end
 
 describe "Frational", "comparsion" do
   it "should use the numerics included comparsion module" do
-    (Fractional.new(Rational(-3,4)) < Fractional.new(Rational(1,2))).should be_true
+    (Fractional.new(Rational(-3,4)) < Fractional.new(Rational(1,2))).should be_truthy
   end
 end
 
@@ -367,7 +368,6 @@ describe "Fractional#to_s" do
   it "should return nice representations of single fractions" do
     Fractional.new(0.75).to_s.should == "3/4"
     Fractional.new(-0.3333).to_s.should == "-1/3"
-
   end
 
   it "should return nice representations of mixed fractions" do
@@ -434,6 +434,23 @@ describe "Fractional", "round" do
   it "should round if passed a float" do
     Fractional.round_to_nearest_fraction(1100.875, 0.5).should == Fractional.new(1101)
   end
+
+  it "should round if passed a float" do
+    Fractional.round_to_human_fraction(0.9001).to_s.should == "9/10"
+    Fractional.round_to_human_fraction(-0.8012).to_s.should == "-4/5"
+    Fractional.round_to_human_fraction(0.337).to_s.should == "1/3"
+    Fractional.round_to_human_fraction(-1.331).to_s.should == "-1 1/3"
+    Fractional.round_to_human_fraction(5.691).to_s.should == "5 7/10"
+    Fractional.round_to_human_fraction(-3.668).to_s.should == "-3 2/3"
+    Fractional.round_to_human_fraction(2.0).to_s.should == "2"
+    Fractional.round_to_human_fraction(11).to_s.should == "11"
+  end
+
+  it "should round if passed 'to_human' that rounds to nearest whole number" do
+    Fractional.new(2.0, to_human: true).to_s.should == "2"
+    Fractional.new(-2.0, to_human: true).to_s.should == "-2"
+  end
+
 end
 
 ##################################
@@ -473,14 +490,14 @@ describe "deprecated methods" do
   end
 
   it "Fraction.fraction?" do
-    Fractional.fraction?("3/4").should be_true
+    Fractional.fraction?("3/4").should be_truthy
   end
 
   it "Fraction.mixed_fraction?" do
-    Fractional.mixed_fraction?("1 11/12").should be_true
+    Fractional.mixed_fraction?("1 11/12").should be_truthy
   end
 
   it "Fraction.single_fraction?" do
-     Fractional.single_fraction?("-3/4").should be_true
+     Fractional.single_fraction?("-3/4").should be_truthy
   end
 end
