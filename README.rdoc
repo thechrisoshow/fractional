@@ -67,7 +67,9 @@ Joey Aghion https://github.com/joeyAghion
 
 muff1nman https://github.com/muff1nman
 
+Alex Nigomatulin https://github.com/GeNiuS69
+
 
 == Copyright
 
-Copyright (c) 2009-2013 Chris O'Sullivan. See LICENSE for details.
+Copyright (c) 2009-2016 Chris O'Sullivan. See LICENSE for details.
