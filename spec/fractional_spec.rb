@@ -381,7 +381,9 @@ describe "Fractional#to_s" do
     Fractional.new(Rational(-3,2)).to_s(mixed_number: true).should == "-1 1/2"
     Fractional.new(1.00).to_s(mixed_number: true).should == "1"
     Fractional.new(0.75).to_s(mixed_number: true).should == "3/4"
+    Fractional.new('-1/2').to_s(mixed_number: true).should == "-1/2"
   end
+
 end
 
 describe "Fractional#to_f" do
