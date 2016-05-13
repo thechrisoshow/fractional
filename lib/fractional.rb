@@ -39,7 +39,11 @@ class Fractional < Numeric
         to_join << whole_part.to_s
       end
       if fractional_part != 0
-        to_join << fractional_part.abs.to_s
+        if whole_part != 0
+          to_join << fractional_part.abs.to_s
+        else
+          to_join << fractional_part.to_s
+        end
       end
       to_join.join(" ")
     else
@@ -241,8 +245,8 @@ class Fractional < Numeric
     end
   end
 
-  # Display numbers in human-readable manner. 
-  #  Examples: 0.5 -> 1/2, 2.333 -> 2 1/3, 0.666 -> 2/3 etc. 
+  # Display numbers in human-readable manner.
+  #  Examples: 0.5 -> 1/2, 2.333 -> 2 1/3, 0.666 -> 2/3 etc.
   #
   def self.round_to_human_fraction(value)
     numeric_to_mixed_number value.rationalize(Rational('0.01'))
