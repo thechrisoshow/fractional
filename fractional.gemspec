@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "fractional"
-  spec.version       = "1.2.0"
+  spec.version       = "1.2.1"
   spec.authors       = ["Chris O'Sullivan"]
   spec.email         = ["thechrisoshow@gmail.com"]
   spec.description   = %q{Fractional is a Ruby library for parsing fractions.}
