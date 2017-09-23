@@ -13,14 +13,12 @@ class Fractional < Numeric
       @value = value
     when String
       @value = Fractional.string_to_fraction( value, options )
-    when Fixnum
+    when Numeric
       if @value == @value.to_i
         @value = Rational(value)
       else # It's still Rational if it's a natural number
         @value = Fractional.float_to_fraction( value.to_f, options )
       end
-    when Numeric
-      @value = Fractional.float_to_fraction( value.to_f, options )
     else
       raise TypeError, "Cannot instantiate Fractional from #{value.class}"
     end
